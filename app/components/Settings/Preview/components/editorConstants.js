@@ -31,11 +31,18 @@ export const selectDropdownStyle = {
 }
 
 export const submitStyle = {
-    background: '#fff', 
+    background: '#fff',
     padding: '10px',
     cursor: 'pointer',
-    border: '1px solid #c8d4e3',
+    border: '1px solid #119DFF',
     fontSize: '12px',
+    width: '250px',
+    float: 'none',
+    margin: 0,
+    borderRadius: '6px',
+    textTransform: 'uppercase',
+    fontWeight: 400,
+    marginBottom: '20px',
     width: '100%',
     float: 'right'
 }

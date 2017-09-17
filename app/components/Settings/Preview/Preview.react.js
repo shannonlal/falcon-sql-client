@@ -14,6 +14,8 @@ import * as Actions from '../../../actions/sessions';
 import {DIALECTS, SQL_DIALECTS_USING_EDITOR} from '../../../constants/constants.js';
 import {submitStyle} from './components/editorConstants.js';
 
+import fetch from 'isomorphic-fetch'
+
 class Preview extends Component {
 
     constructor(props) {
@@ -22,6 +24,26 @@ class Preview extends Component {
         this.updateCode = this.updateCode.bind(this);
         this.toggleEditor = this.toggleEditor.bind(this);
         this.runQuery = this.runQuery.bind(this);
+        this.downloadCSV = this.downloadCSV.bind(this);
+    }
+
+    fetchGrid(gridObj) {
+
+        const gridJSON = JSON.stringify({grid: gridObj});
+
+        fetch("/grids", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include',
+            body: gridJSON
+        }).then(function(resp) {
+            return resp.json();
+        }).then(function(data) {
+            console.warn('***', data);
+        });
     }
 
     testClass() {
@@ -53,6 +75,17 @@ class Preview extends Component {
         this.props.updatePreview({
             showEditor: showEditor ? false : true
         });
+    }
+
+    downloadCSV(columns, rows) {
+        var csv = columns.join(",");
+        rows.map( row => {
+            csv += "\n";
+            csv += row.join(",");
+        });
+
+        var uriContent = "data:application/octet-stream," + encodeURIComponent(csv);
+        window.open(uriContent, "Export CSV");
     }
 
     render() {
@@ -223,19 +256,42 @@ class Preview extends Component {
                             </TabPanel>
 
                             <TabPanel>
-                                <form
-                                    action='https://plot.ly/datagrid'
-                                    method='post'
-                                    target='_blank'
-                                    name='data'
-                                >
-                                    <input type='hidden' name='data' value={JSON.stringify(dataGrid)} />
-                                    <input 
-                                        type="submit" 
-                                        style={submitStyle}
-                                        value={`Export ${rows.length} rows to plot.ly`}
-                                    />
-                                </form>                                
+                                <div className='export-options-container'>
+                                    <div>
+                                        {/*<form
+                                            action='https://plot.ly/datagrid'
+                                            method='post'
+                                            target='_blank'
+                                            name='data'
+                                        >
+                                            <input type='hidden' name='data' value={JSON.stringify(dataGrid)} />
+                                            <input 
+                                                type="submit" 
+                                                style={Object.assign({}, submitStyle, {
+                                                    width: '230px', 
+                                                    float: 'none', 
+                                                    marginBottom: '20px'})}
+                                                value={`Export ${rows.length} rows to plot.ly`}
+                                            />
+                                        </form>*/}
+                                        <button 
+                                            className='btn btn-outline' 
+                                            style={{margin: 0}}
+                                            onClick={() => this.fetchGrid(JSON.stringify(dataGrid))}
+                                        >
+                                            Export CSV to plot.ly
+                                        </button>                                        
+                                    </div>
+                                    <div>
+                                        <button 
+                                            className='btn btn-outline' 
+                                            style={{margin: 0}}
+                                            onClick={() => this.downloadCSV(columnnames, rows)}
+                                        >
+                                            Download CSV
+                                        </button>
+                                    </div>
+                                </div>
                             </TabPanel>                            
                         </Tabs>
                     </div>

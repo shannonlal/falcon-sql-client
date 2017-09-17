@@ -115,7 +115,23 @@ button.btn-secondary {
     text-shadow: none;
 }
 
-button:hover, .btn-primary:hover {
+button.btn-outline {
+    background: rgb(255, 255, 255);
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #119DFF;
+    font-size: 12px;
+    float: none;
+    margin: 0px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #506784;
+    text-shadow: none;
+}
+
+button.btn-primary:hover {
     color: #ffffff;    
     background-color: #0f89df;
     border: 1px solid #0f89df;
@@ -126,8 +142,12 @@ button.btn-secondary:hover {
     border: 1px solid #c8d4e3;
     color: #2a3f5f;    
 }
-    
-button:active, .btn-primary:active {
+
+button.btn-outline:hover {
+    color: #000;
+}
+
+button.btn-primary:active {
     color: #ffffff;    
     background-color: #0d76bf;
     border: 1px solid #0d76bf;
@@ -148,10 +168,10 @@ button:active, .btn-primary:active {
 
 /* Tab Panel Content */
 
-.react-tabs__tab-panel p {
+.react-tabs__tab-panel p, .export-options-container {
     padding: 20px;
     margin: 20px 0;
-    background: #f3f6fa;
+    background: rgb(251, 252, 253);
     border: 1px solid #ebf0f8;
 }
 

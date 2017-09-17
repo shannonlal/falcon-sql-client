@@ -16,7 +16,7 @@ import {
 } from './persistent/Connections.js';
 import QueryScheduler from './persistent/QueryScheduler.js';
 import {getSetting, saveSetting} from './settings.js';
-import {checkWritePermissions} from './persistent/PlotlyAPI.js';
+import {checkWritePermissions, newGrid} from './persistent/PlotlyAPI.js';
 import {contains, has, keys, isEmpty, merge, pluck} from 'ramda';
 import {getCerts, timeoutFetchAndSaveCerts, setRenewalJob} from './certificates';
 import Logger from './logger';
@@ -464,6 +464,24 @@ export default class Servers {
             });
         });
 
+        /* Plotly v2 API requests */
+
+        server.post('/grids', function getGridsHandler(req, res, next) {
+            const {grid, requestor} = req.params;
+
+            console.log('---->', requestor, grid);
+
+            const gridResp = newGrid(grid, 'plotly-database-connector');
+
+            console.log('** ---->', gridResp);
+
+            if (gridResp) {
+                res.json(200, gridResp);
+            } else {
+                res.json(404, {});
+            } 
+        });        
+
         /* Persistent Datastores */
 
         // return the list of registered queries
@@ -544,11 +562,14 @@ export default class Servers {
              * It might be related to the CORS OPTIONS requests that get preceed
              * these requests.
              */
+            
+            console.log('uncaughtException', JSON.stringify(err));
+
             if (err.message.indexOf("Can't set headers after they are sent") === -1) {
                 Logger.log(err);
             }
             res.json(500, {
-                error: {message: err.message}
+                error: {message: err}
             });
         });
     }

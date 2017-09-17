@@ -13,6 +13,10 @@ export function PlotlyAPIRequest(relativeUrl, {body, username, apiKey, accessTok
     } else {
         throw new Error('Missing apiKey or accessToken');
     }
+
+    console.log('-------------------------------');
+    console.log(relativeUrl, body);
+
     return fetch(`${getSetting('PLOTLY_API_URL')}/v2/${relativeUrl}`, {
         method,
         headers: {
@@ -25,6 +29,37 @@ export function PlotlyAPIRequest(relativeUrl, {body, username, apiKey, accessTok
     });
 }
 
+export function newGrid(gridJSON, requestor) {
+    const username = requestor;
+    const users = getSetting('USERS');
+    const user = users.find(u => u.username === username);
+    const apiKey = user.apiKey;
+    const accessToken = user.accessToken;
+    const gridObj = {data: JSON.parse(gridJSON)};
+
+    let authorization;
+    if (accessToken) {
+        authorization = `Bearer ${accessToken}`;
+    } else {
+        throw new Error('MissingaccessToken');
+    }
+
+    console.log('+++++++++++++++++++++++++');
+    console.log(gridObj);
+
+    return fetch(`${getSetting('PLOTLY_API_URL')}/asdfas13`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Plotly-Client-Platform': 'db-connect',
+            'Authorization': authorization
+        },
+        body: gridObj ? JSON.stringify(gridObj) : null
+    });    
+
+    //return PlotlyAPIRequest(url, {gridObj, username, apiKey, accessToken, method: 'POST'});    
+}
 
 export function updateGrid(rows, fid, uids, requestor) {
     const username = requestor;
