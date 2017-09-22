@@ -90,6 +90,11 @@ function saveCredentials() {
         settings.getSetting('SETTINGS_PATH'),
         `USERS: ${usersValue}`
     );
+    fs.writeFileSync(
+        settings.getSetting('SETTINGS_PATH'),
+        'AUTH_ENABLED: false'
+    );
+
 }
 
 function clearConnectorFolder() {
