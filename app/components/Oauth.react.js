@@ -1,7 +1,9 @@
 import queryString from 'query-string';
 import fetch from 'isomorphic-fetch';
-import React, {Component} from 'react';
+import React, { Component, PropTypes } from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import * as SessionsActions from '../actions/sessions';
 
 class Status extends Component {
     constructor(props) {
@@ -38,6 +40,7 @@ class Status extends Component {
         })
         .then(res => res.json().then(json => {
             if (res.status >= 200 && res.status < 400) {
+                this.props.sessionsActions.setUsername(json.username);
                 this.setState({status: 'success'});
                 setTimeout(() => window.close(), 500 );
             } else if (res.status >= 400) {
@@ -102,4 +105,19 @@ class Status extends Component {
 
 }
 
-export default connect()(Status);
+Status.propTypes = {
+    sessionsActions: PropTypes.object,
+    sessions: PropTypes.object,
+    username: PropTypes.String
+};
+
+function mapStateToProps(state) {
+    return {sessions: state.sessions, username: state.username};
+}
+
+function mapDispatchToProps(dispatch) {
+    const sessionsActions = bindActionCreators(SessionsActions, dispatch);
+    return {sessionsActions};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Status);

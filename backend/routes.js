@@ -258,7 +258,7 @@ export default class Servers {
                         status = 201;
                     }
                     saveSetting('USERS', existingUsers);
-                    res.json(status, {});
+                    res.json(status, {username});
                 } else {
                     Logger.log(userMeta, 0);
                     res.json(500, {error: {message: `Error ${userRes.status} fetching user`}});
