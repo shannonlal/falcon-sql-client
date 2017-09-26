@@ -13,6 +13,8 @@ export const mergeConnections = createAction('MERGE_CONNECTIONS');
 export const updateConnection = createAction('UPDATE_CREDENTIAL');
 export const deleteConnection = createAction('DELETE_CREDENTIAL');
 export const updatePreview = createAction('UPDATE_PREVIEW');
+export const setUsername = createAction('ADD_USERNAME');
+
 
 const DELETE_TAB_MESSAGE = 'You are about to delete a connection. ' +
 'If you have scheduled persistent queries with that connection, they ' +

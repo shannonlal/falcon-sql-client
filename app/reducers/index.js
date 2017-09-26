@@ -244,6 +244,15 @@ function previews(state = {}, action) {
     }
 }
 
+function username(state='', action){
+    if (action.type == 'ADD_USERNAME') {
+        return action.payload
+    }
+    else {
+      return ''
+    }
+}
+
 const rootReducer = combineReducers({
     tabMap,
     connections,
@@ -266,7 +275,8 @@ const rootReducer = combineReducers({
     apacheDrillS3KeysRequests,
     schemaRequests,
     queryRequests,
-    previews
+    previews,
+    username
 });
 
 export default rootReducer;
