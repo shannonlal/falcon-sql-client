@@ -54,11 +54,13 @@ class Configuration extends Component {
 }
 
 Configuration.propTypes = {
+    username: PropTypes.String,
+    sessions: PropTypes.object,
     sessionsActions: PropTypes.object
 };
 
 function mapStateToProps(state) {
-    return {sessions: state.sessions};
+    return {sessions: state.sessions, username: state.username};
 }
 
 function mapDispatchToProps(dispatch) {

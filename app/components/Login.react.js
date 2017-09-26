@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import React, {Component} from 'react';
+import React, { Component, PropTypes } from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
     baseUrl,
@@ -8,6 +9,7 @@ import {
 import {Link} from './Link.react';
 import {productName, version} from '../../package.json';
 import {contains} from 'ramda';
+import * as SessionsActions from '../actions/sessions';
 
 
 const currentEndpoint = '/login';
@@ -348,4 +350,19 @@ class Login extends Component {
     }
 }
 
-export default connect()(Login);
+Login.propTypes = {
+    username: PropTypes.String,
+    sessions: PropTypes.object,
+    sessionsActions: PropTypes.object
+};
+
+function mapStateToProps(state) {
+    return {sessions: state.sessions, username: state.username};
+}
+
+function mapDispatchToProps(dispatch) {
+    const sessionsActions = bindActionCreators(SessionsActions, dispatch);
+    return {sessionsActions};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
