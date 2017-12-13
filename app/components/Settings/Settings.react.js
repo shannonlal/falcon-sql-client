@@ -43,6 +43,10 @@ class Settings extends Component {
     }
 
     componentDidMount() {
+        console.log( 'Component did mount 1');
+        console.log( 'Component did mount 2');
+        debugger;
+
         this.fetchData();
         this.intervals.getConnectorUrlsInterval = setInterval(() => {
             // TODO - Clear this?
@@ -215,6 +219,7 @@ class Settings extends Component {
                 previewTables();
             }
         } else if (connectionObject.dialect === DIALECTS.ELASTICSEARCH) {
+            debugger;
             if (connectRequest.status === 200 && !elasticsearchMappingsRequest.status) {
                 getElasticsearchMappings();
             }
