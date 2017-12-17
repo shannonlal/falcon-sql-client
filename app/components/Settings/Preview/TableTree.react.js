@@ -70,6 +70,7 @@ class TableTree extends Component {
         }
 
         if (status !== 200) {
+            console.log('Got an Error resposne in table tree');
             return (
                 <div style={{padding: '5px', fontSize: '12px'}}>
                     {`ERROR ${JSON.stringify(schemaRequest)}`}

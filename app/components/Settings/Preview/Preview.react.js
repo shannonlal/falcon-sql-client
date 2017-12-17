@@ -70,6 +70,7 @@ class Preview extends Component {
             isLoading = true;
         }
         else if (previewTableRequest.status !== 200) {
+            console.log( 'Got Error Message ', previewTableRequest.status);
             errorMsg = JSON.stringify(previewTableRequest);
         }
         else if (isEmpty(queryRequest)) {

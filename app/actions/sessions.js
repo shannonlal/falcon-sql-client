@@ -69,6 +69,7 @@ function PUT(path, body = {}) {
 }
 
 function apiThunk(endpoint, method, store, id, body) {
+    console.log( 'Calling API Thunk', endpoint);
     return dispatch => {
         dispatch({
             type: store,
@@ -89,6 +90,7 @@ function apiThunk(endpoint, method, store, id, body) {
             }
         ))
         .catch(err => {
+            console.log( 'err on call', err);
             console.error(err); // eslint-disable-line no-console
             dispatch({
                 type: store,
@@ -173,6 +175,7 @@ export function getTables(connectionId) {
 }
 
 export function getElasticsearchMappings(connectionId) {
+    console.log( 'Getting Elastic Search Mappings', connectionId);
     return apiThunk(
         `connections/${connectionId}/elasticsearch-mappings`,
         'POST',

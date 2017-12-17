@@ -172,6 +172,9 @@ function selectedTab(state = '', action) {
 
 function selectedTables(state = {}, action) {
     if (action.type === 'SET_TABLE') {
+        console.log( 'Setting table', action);
+        console.log( 'Setting state', state);
+        debugger;
         return merge(state, action.payload);
     } else if (action.type === 'RESET') {
         return merge(state, assoc(action.payload.id, '', state));

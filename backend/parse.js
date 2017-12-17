@@ -184,7 +184,7 @@ export function parseElasticsearch(inputJson, outputJson, mappings) {
      *     "my-date": {"type": "date"},
      * }
      */
-
+    console.log( 'Starting to parse Elastic Search');
      if (inputJson.aggs) {
          const aggregationType = keys(inputJson.aggs.agg1)[0];
          const aggregationColumn = inputJson.aggs.agg1[aggregationType].field;
@@ -205,8 +205,10 @@ export function parseElasticsearch(inputJson, outputJson, mappings) {
                  rows[i] = [buckets[i].key, buckets[i].agg2.value];
              }
          }
+         console.log( 'Converted results into columar format');
          return {columnnames, rows};
      } else if (outputJson.hits.hits.length === 0) {
+        console.log( 'Nothing Returned');
          return {
              columnnames: [],
              rows: [[]]
@@ -257,7 +259,7 @@ export function parseElasticsearch(inputJson, outputJson, mappings) {
 
          }
      }
-
+     console.log( 'At end returning columar data', columnnames);
      return {columnnames, rows};
 }
 

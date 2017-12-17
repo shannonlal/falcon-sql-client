@@ -578,9 +578,11 @@ export default class Servers {
                 Datastores.elasticsearchMappings(
                     getConnectionById(req.params.connectionId)
                 ).then(mappings => {
+                    console.log( 'Elastic Search Mapping Route', mappings);
                     res.json(200, mappings);
                     return next();
                 }).catch(error => {
+                    console.log( 'Elastic Search Mapping Route Error', error);
                     res.json(500, {error: {message: error.message}});
                     return next();
                 });

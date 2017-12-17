@@ -45,17 +45,18 @@ class Settings extends Component {
     componentDidMount() {
         console.log( 'Component did mount 1');
         console.log( 'Component did mount 2');
-        debugger;
 
         this.fetchData();
         this.intervals.getConnectorUrlsInterval = setInterval(() => {
             // TODO - Clear this?
+            console.log( 'Getting connection Interval');
             this.props.dispatch(Actions.getConnectorUrls());
         }, 5 * 1000);
         let timeElapsed = 0;
 
         const STARTED_AT = new Date();
         this.intervals.timeElapsedInterval = setInterval(() => {
+            console.log( 'Get Time elasped');
             const seconds = Math.round((new Date().getTime() - STARTED_AT.getTime()) / 1000);
             const minutes = Math.floor(seconds / 60);
             timeElapsed = seconds > 60 ?
@@ -65,7 +66,9 @@ class Settings extends Component {
         }, 5 * 1000);
 
         this.intervals.checkHTTPSEndpointInterval = setInterval(() => {
+            console.log( 'Check HTTPS endpoints');
             if (this.state.urls.https) {
+                console.log( 'Checking HTTPS endpoints');
                 fetch(this.state.urls.https).then(() => {
                     this.setState({httpsServerIsOK: true});
                     clearInterval(this.intervals.checkHTTPSEndpointInterval);
@@ -156,6 +159,7 @@ class Settings extends Component {
     }
 
     fetchData() {
+        console.log( 'Fetching Data');
         const {
             apacheDrillStorageRequest,
             apacheDrillS3KeysRequest,
@@ -181,6 +185,7 @@ class Settings extends Component {
             selectedIndex,
             tablesRequest
         } = this.props;
+        //TODO Put place holder here
         if (connectionsRequest && !connectionsRequest.status) {
             initialize();
         }
@@ -219,7 +224,6 @@ class Settings extends Component {
                 previewTables();
             }
         } else if (connectionObject.dialect === DIALECTS.ELASTICSEARCH) {
-            debugger;
             if (connectRequest.status === 200 && !elasticsearchMappingsRequest.status) {
                 getElasticsearchMappings();
             }
@@ -249,6 +253,7 @@ class Settings extends Component {
                 getApacheDrillS3Keys();
             }
         }
+        console.log( 'Completed fetching data');
     }
 
     render() {

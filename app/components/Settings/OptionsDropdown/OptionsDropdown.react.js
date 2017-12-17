@@ -59,6 +59,7 @@ export default class OptionsDropdown extends Component {
     }
 
     renderElasticsearchIndecies() {
+        console.log( 'Rendering elastic search drop down');
         const {
             elasticsearchMappingsRequest: EMR,
             setIndex,
@@ -90,6 +91,7 @@ export default class OptionsDropdown extends Component {
                         value={selectedIndex}
                         searchable={false}
                         onChange={option => {
+                            console.log( 'Changing value', option);
                             setIndex(option.value);
                         }}
                     />
@@ -99,6 +101,7 @@ export default class OptionsDropdown extends Component {
     }
 
     renderElasticsearchDocs() {
+        console.log( 'Rendering elastic search drop down docs');
         const {
             selectedTable,
             selectedIndex,
@@ -124,6 +127,7 @@ export default class OptionsDropdown extends Component {
                     value={selectedTable}
                     searchable={false}
                     onChange={option => {
+                        console.log( 'Setting table', option);
                         setTable(option.value);
                     }}
                 />
