@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {LOGOS, DIALECTS} from '../../../constants/constants';
+import {getPathNames} from '../../../utils/utils';
 
 export default class ConnectionTab extends Component {
     constructor(props) {
@@ -33,8 +34,17 @@ export default class ConnectionTab extends Component {
             label = `Apache Spark (${connectionObject.host}:${connectionObject.port})`;
         } else if (connectionObject.dialect === DIALECTS.ELASTICSEARCH) {
             label = `Elasticsearch (${connectionObject.host})`;
+        } else if (connectionObject.dialect === DIALECTS.ATHENA) {
+            label = `Athena (${connectionObject.database})`;
         } else if (connectionObject.dialect === DIALECTS.SQLITE) {
             label = connectionObject.storage;
+        } else if (connectionObject.dialect === DIALECTS.DATA_WORLD) {
+            const pathNames = getPathNames(connectionObject.url);
+            if (pathNames.length >= 3) {
+                label = `data.world (${pathNames[1]}/${pathNames[2]})`;
+            } else {
+                label = 'data.world (/)';
+            }
         } else {
             label = `${connectionObject.database} (${connectionObject.username}@${connectionObject.host})`;
         }

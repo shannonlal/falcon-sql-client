@@ -14,7 +14,9 @@ export const DIALECTS = {
     IBM_DB2: 'ibm db2',
     APACHE_SPARK: 'apache spark',
     APACHE_IMPALA: 'apache impala',
-    APACHE_DRILL: 'apache drill'
+    APACHE_DRILL: 'apache drill',
+    DATA_WORLD: 'data.world',
+    ATHENA: 'athena'
 };
 
 export const SQL_DIALECTS_USING_EDITOR = [
@@ -26,7 +28,9 @@ export const SQL_DIALECTS_USING_EDITOR = [
     'sqlite',
     'ibm db2',
     'apache spark',
-    'apache impala'
+    'apache impala',
+    'data.world',
+    'athena'
 ];
 
 const commonSqlOptions = [
@@ -178,7 +182,52 @@ export const CONNECTION_CONFIG = {
             'value': 'secretAccessKey',
             'type': 'password'
         }
-    ] // TODO - password options for apache drill
+    ], // TODO - password options for apache drill
+
+    [DIALECTS.DATA_WORLD]: [
+        {
+            'label': 'Dataset/Project URL',
+            'value': 'url',
+            'type': 'text',
+            'description': 'The URL of the dataset or project on data.world'
+        },
+        {
+            'label': 'Read/Write API Token',
+            'value': 'token',
+            'type': 'password',
+            'description': 'Your data.world read/write token. It can be obtained from https://data.world/settings/advanced'
+        }
+    ],
+    [DIALECTS.ATHENA]: [
+        {
+            'label': 'S3 Access Key', 'value': 'accessKey', 'type': 'password'
+        },
+        {
+            'label': 'S3 Secret Access Key', 'value': 'secretKey', 'type': 'password'
+        },
+        {
+            'label': 'AWS Region', 'value': 'region', 'type': 'text',
+            'description': 'The AWS region (i.e. us-east-1) where the database resides'
+        },
+        {
+            'label': 'S3 Bucket', 'value': 'outputS3Bucket', 'type': 'text',
+            'description': 'The Athena connector will store query results in this location.'
+        },
+        {
+            'label': 'Database', 'value': 'database', 'type': 'text'
+        },
+        {
+            'label': 'Query Interval', 'value': 'queryInterval', 'type': 'number',
+            'description': 'The Interval (In Milliseconds) that Falcon will check to see \
+                             if the Athena Query is done. Default 2 seconds'
+        },
+        {
+            'label': 'SSL Enabled', 'value': 'sslEnabled', 'type': 'checkbox',
+            'description': 'Does your database require that you connect to it via SSL? \
+                            Note that this is just the connection between this app and your database; \
+                            connections to plot.ly or your plotly instance are always encrypted.'
+        }
+    ]
 };
 
 
@@ -194,7 +243,9 @@ export const LOGOS = {
     [DIALECTS.MSSQL]: 'images/mssql-logo.png',
     [DIALECTS.SQLITE]: 'images/sqlite-logo.png',
     [DIALECTS.S3]: 'images/s3-logo.png',
-    [DIALECTS.APACHE_DRILL]: 'images/apache_drill-logo.png'
+    [DIALECTS.APACHE_DRILL]: 'images/apache_drill-logo.png',
+    [DIALECTS.DATA_WORLD]: 'images/dataworld-logo.png',
+    [DIALECTS.ATHENA]: 'images/athena-logo.png'
 };
 
 export function PREVIEW_QUERY (dialect, table, database = '') {
@@ -207,7 +258,9 @@ export function PREVIEW_QUERY (dialect, table, database = '') {
         case DIALECTS.SQLITE:
         case DIALECTS.MARIADB:
         case DIALECTS.POSTGRES:
+        case DIALECTS.DATA_WORLD:
         case DIALECTS.REDSHIFT:
+        case DIALECTS.ATHENA:
             return `SELECT * FROM ${table} LIMIT 1000`;
         case DIALECTS.MSSQL:
             return 'SELECT TOP 1000 * FROM ' +
@@ -222,7 +275,7 @@ export function PREVIEW_QUERY (dialect, table, database = '') {
                 }
             });
         default:
-            throw new Error(`Dialect ${dialect} is not one of the DIALECTS`);
+            return '';
     }
 }
 
@@ -297,14 +350,14 @@ export const SAMPLE_DBS = {
         timeout: 180,
         database: 'plotly',
         port: 21000,
-        host: '35.184.155.127',
+        host: 'impala.test.plotly.host',
         dialect: DIALECTS.APACHE_IMPALA
     },
     [DIALECTS.APACHE_SPARK]: {
         timeout: 180,
         database: 'plotly',
         port: 8998,
-        host: '104.154.141.189',
+        host: 'spark.test.plotly.host',
         dialect: DIALECTS.APACHE_SPARK
     },
     [DIALECTS.IBM_DB2]: {
@@ -312,10 +365,10 @@ export const SAMPLE_DBS = {
         password: 'w8wfy99DvEmgkBsE',
         database: 'plotly',
         port: 50000,
-        host: '35.184.35.183',
+        host: 'db2.test.plotly.host',
         dialect: DIALECTS.IBM_DB2
     },
-    postgres: {
+    [DIALECTS.POSTGRES]: {
         username: 'masteruser',
         password: 'connecttoplotly',
         database: 'plotly_datasets',
@@ -323,7 +376,7 @@ export const SAMPLE_DBS = {
         host: 'readonly-test-postgres.cwwxgcilxwxw.us-west-2.rds.amazonaws.com',
         dialect: 'postgres'
     },
-    mysql: {
+    [DIALECTS.MYSQL]: {
         dialect: 'mysql',
         username: 'masteruser',
         password: 'connecttoplotly',
@@ -331,7 +384,7 @@ export const SAMPLE_DBS = {
         port: 3306,
         database: 'plotly_datasets'
     },
-    mariadb: {
+    [DIALECTS.MARIADB]: {
         dialect: 'mariadb',
         username: 'masteruser',
         password: 'connecttoplotly',
@@ -339,7 +392,7 @@ export const SAMPLE_DBS = {
         port: 3306,
         database: 'plotly_datasets'
     },
-    redshift: {
+    [DIALECTS.REDSHIFT]: {
         dialect: 'redshift',
         username: 'plotly',
         password: 'Qmbdf#3DU]pP8a=CKTK}',
@@ -347,7 +400,7 @@ export const SAMPLE_DBS = {
         port: 5439,
         database: 'plotly_datasets'
     },
-    mssql: {
+    [DIALECTS.MSSQL]: {
         dialect: 'mssql',
         username: 'masteruser',
         password: 'connecttoplotly',
@@ -355,18 +408,18 @@ export const SAMPLE_DBS = {
         port: 1433,
         database: 'plotly_datasets'
     },
-    elasticsearch: {
+    [DIALECTS.ELASTICSEARCH]: {
         dialect: 'elasticsearch',
         host: 'https://67a7441549120daa2dbeef8ac4f5bb2e.us-east-1.aws.found.io',
         port: '9243'
     },
-    s3: {
+    [DIALECTS.S3]: {
         dialect: 's3',
         bucket: 'plotly-s3-connector-test',
         accessKeyId: 'AKIAIMHMSHTGARJYSKMQ',
         secretAccessKey: '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'
     },
-    'apache drill': {
+    [DIALECTS.APACHE_DRILL]: {
         dialect: 'apache drill',
         host: 'http://ec2-35-164-71-216.us-west-2.compute.amazonaws.com',
         port: 8047,
@@ -375,8 +428,19 @@ export const SAMPLE_DBS = {
         accessKeyId: 'AKIAIMHMSHTGARJYSKMQ',
         secretAccessKey: 'Urvus4R7MnJOAqT4U3eovlCBimQ4Zg2Y9sV5LWow'
     },
-    sqlite: {
+    [DIALECTS.SQLITE]: {
         dialect: 'sqlite',
         storage: `${__dirname}/plotly_datasets.db`
+    },
+    [DIALECTS.ATHENA]: {
+        s3Outputlocation: 'plotly-s3-connector-test',
+        accessKey: 'AKIAIMHMSHTGARJYSKMQ',
+        secretKey: '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',
+        region: 'us-west-2',
+        database: 'default',
+        queryTimeout: 5000
+    },
+    [DIALECTS.DATA_WORLD]: {
+        url: 'https://data.world/rflprr/reported-lyme-disease-cases-by-state'
     }
 };
