@@ -10,7 +10,7 @@ function request(relativeUrl, connection, {body, method, queryStringParams = ''}
     console.log( 'Attempting to connect to Elastic Search', port);
     console.log( 'Attempting to connect to Elastic Search', port.constructor.toString());
     let url;
-    if( typeof port !== 'undefined' || port !== ''){
+    if( typeof port !== 'undefined' && port !== ''){
         url = `${host}:${port}/${relativeUrl}?format=json${queryStringParams}`;
     }else{
         url = `${host}/${relativeUrl}?format=json${queryStringParams}`;

@@ -9,6 +9,7 @@ import CodeEditorField from './CodeEditorField.react.js';
 import ChartEditor from './ChartEditor.react.js';
 import ApacheDrillPreview from './ApacheDrillPreview.js';
 import S3Preview from './S3Preview.js';
+import ElasticSearchPreview from './ElasticSearchPreview';
 
 import OptionsDropdown from '../OptionsDropdown/OptionsDropdown.react';
 import {Link} from '../../Link.react';
@@ -291,6 +292,7 @@ class Preview extends Component {
 
         // Surpressing ESLint cause restricting line length would harm JSX readability
         /* eslint-disable max-len */
+        console.log( 'Dialect', dialect )
         return (
             <div className={'previewContainer'}>
                 <div>
@@ -325,7 +327,19 @@ class Preview extends Component {
                         </div>
                     }
 
-                    {!SQL_DIALECTS_USING_EDITOR.includes(dialect) &&
+                    {dialect === DIALECTS.ELASTICSEARCH && 
+                        <ElasticSearchPreview 
+                            connectionObject={connectionObject}
+                            selectedTable={selectedTable}
+                            elasticsearchMappingsRequest={elasticsearchMappingsRequest}
+                            tablesRequest={tablesRequest}
+                            setTable={setTable}
+                            setIndex={setIndex}
+                            selectedIndex={selectedIndex}
+                        />
+                    }
+
+                    {dialect !== DIALECTS.ELASTICSEARCH && !SQL_DIALECTS_USING_EDITOR.includes(dialect) &&
                         <OptionsDropdown
                             connectionObject={connectionObject}
                             selectedTable={selectedTable}
