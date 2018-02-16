@@ -67,6 +67,7 @@ function getDatastoreClient(connection) {
  *
  */
 export function query(queryObject, connection) {
+    console.log( 'Query in datastore being called', queryObject);
     return getDatastoreClient(connection).query(queryObject, connection);
 }
 

@@ -7,8 +7,8 @@ const MAX_RESULTS_SIZE = 10 * 1000;
 function request(relativeUrl, connection, {body, method, queryStringParams = ''}) {
     const {host, port, username, password} = connection;
     //TODO put back the port
-    console.log( 'Attempting to connect to Elastic Search', port);
-    console.log( 'Attempting to connect to Elastic Search', port.constructor.toString());
+
+
     let url;
     if( typeof port !== 'undefined' && port !== ''){
         url = `${host}:${port}/${relativeUrl}?format=json${queryStringParams}`;
@@ -38,7 +38,7 @@ export function connect(connection) {
 }
 
 export function query(queryStmt, connection) {
-    console.log( 'Start Elastic Search Query');
+    console.log( 'Start Elastic Search Query', queryStmt);
     const queryObject = JSON.parse(queryStmt);
     const {body, index, type} = queryObject;
     /*
@@ -63,18 +63,18 @@ export function query(queryStmt, connection) {
             queryStringParams: scrollParam
         })
         .then(res => res.json().then(results => {
-            console.log( 'Got Elastic Search Data', results);
+            //console.log( 'Got Elastic Search Data', results);
             if (res.status === 200) {
                 return parseElasticsearch(body, results, mapping);
             }
-            console.log( 'Error getting search mapping', results);
+            //console.log( 'Error getting search mapping', results);
             throw new Error(JSON.stringify(results));
         }));
     });
 }
 
 export function elasticsearchMappings(connection) {
-    console.log( 'Start getting Elastic Search Mappings');
+    //console.log( 'Start getting Elastic Search Mappings');
     return request('_all/_mappings', connection, {method: 'GET'})
     .then(res => res.json());
 }

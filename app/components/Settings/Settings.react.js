@@ -607,6 +607,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         return dispatch(Actions.getApacheDrillS3Keys(selectedConnectionId));
     }
     function boundSetTable(table) {
+        console.log( 'Setting Table ', table);
+        console.log( 'Selected connected id', selectedConnectionId);
         return dispatch(Actions.setTable({[selectedConnectionId]: table}));
     }
     function boundSetIndex(index) {

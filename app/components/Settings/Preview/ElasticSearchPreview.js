@@ -19,13 +19,11 @@ class ElasticSearchPreview extends Component {
     }
 
     renderElasticsearchIndecies() {
-        console.log( 'Rendering elastic search drop down');
         const {
             elasticsearchMappingsRequest: EMR,
             setIndex,
             selectedIndex
         } = this.props;
-
         if (!EMR.status) {
             return null;
         } else if (EMR.status === 'loading') {
@@ -43,42 +41,17 @@ class ElasticSearchPreview extends Component {
             if (indeciesList.length === 0) {
                 return <div>{'No docs found'}</div>;
             }
-
-            console.log( 'EMR', EMR);
-            console.log( 'Indecies List', indeciesList);
-            const opts = indeciesList.map(t => ({label: t, value: t}));
-
-            console.log( 'Opts');
-            console.log( 'selected Indx', selectedIndex);
-            /**
-             * value={selectedIndex}
-                        searchable={false}
-                        onChange={option => {
-                            console.log( 'Changing value', option);
-                            //setIndex(option.value);
-                        }}
-             */
-
-             /**
-              * <Select
-                        options={opts}
-                        
-                    />
-              */
-              const value = '';
             return (
-                
                 <div className={'dropdown'}
                     id="test-table-dropdown"
                 >
                     <Select
-                        name="form-field-name"
-                        value={value}
-                        onChange={this.handleChange}
-                        options={[
-                        { value: 'one', label: 'One' },
-                        { value: 'two', label: 'Two' },
-                        ]}
+                        options={indeciesList.map(t => ({label: t, value: t}))}
+                        value={selectedIndex}
+                        searchable={false}
+                        onChange={option => {
+                            setIndex(option.value);
+                        }}
                     />
                 </div>
             );
@@ -86,7 +59,6 @@ class ElasticSearchPreview extends Component {
     }
 
     renderElasticsearchDocs() {
-        console.log( 'Rendering elastic search drop down docs');
         const {
             selectedTable,
             selectedIndex,
@@ -112,7 +84,6 @@ class ElasticSearchPreview extends Component {
                     value={selectedTable}
                     searchable={false}
                     onChange={option => {
-                        console.log( 'Setting table', option);
                         setTable(option.value);
                     }}
                 />
@@ -125,6 +96,7 @@ class ElasticSearchPreview extends Component {
         return (
             <div style={{marginTop: '25px'}}>
                 {this.renderElasticsearchIndecies()}
+                {this.renderElasticsearchDocs()}
             </div>
         );
     }

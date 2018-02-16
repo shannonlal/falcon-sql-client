@@ -249,6 +249,7 @@ export const LOGOS = {
 };
 
 export function PREVIEW_QUERY (dialect, table, database = '') {
+
     switch (dialect) {
         case DIALECTS.IBM_DB2:
             return `SELECT * FROM ${table} FETCH FIRST 1000 ROWS ONLY`;
@@ -266,6 +267,7 @@ export function PREVIEW_QUERY (dialect, table, database = '') {
             return 'SELECT TOP 1000 * FROM ' +
                 `${database}.dbo.${table}`;
         case DIALECTS.ELASTICSEARCH:
+            debugger;
             return JSON.stringify({
                 index: database || '_all',
                 type: table || '_all',
