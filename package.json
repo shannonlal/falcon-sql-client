@@ -219,7 +219,8 @@
     "react-test-renderer":"latest",
     "react-addons-test-utils": "latest",
     "enzyme":"latest",
-    "babel-preset-jest":"^22.2.0"
+    "babel-preset-jest":"^22.2.0",
+    "enzyme-adapter-react-15":"^1.0.5"
   },
   "dependencies": {
     "csv-parse": "^2.0.0",
